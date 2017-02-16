@@ -26,7 +26,25 @@ function addProjectDetails(e) {
 	// get rid of 'project' from the front of the id 'project3'
 	var idNumber = projectID.substr('project'.length);
 
-	console.log("User clicked on project " + idNumber);
+	//console.log("User clicked on project " + idNumber);
+
+
+	$.get('/project/' + idNumber, addDetails)
+
+}
+
+function addDetails(result){
+	//console.log(result)
+
+
+	var image = '<img src="' + result['image'] + '" class="detailsImage">'
+	var projectHTML =
+									image
+									+ '<p>' + result['title'] + '</p>'
+									+ '<p>' + result['date'] + '</p>'
+									+ '<p>' + result['summary'] + '</p>'
+
+	$("#project" + result['id'] + " .details").html(projectHTML);
 }
 
 /*
@@ -35,4 +53,23 @@ function addProjectDetails(e) {
  */
 function randomizeColors(e) {
 	console.log("User clicked on color button");
+
+	e.preventDefault();
+	$.get('/palette', modifyColors);
+}
+
+function modifyColors(result){
+	// console.log(result);
+	var colors = result['colors']['hex'];
+	// console.log(colors);
+	var bgColor = colors[0];
+	var bgColor2 = colors[1];
+	var hColors = colors[2];
+	var pColor = colors[3];
+	$('body').css('background-color', bgColor);
+	$('.thumbnail').css('background-color', bgColor2);
+	$('h1, h2, h3, h4, h5, h5').css('color', hColors);
+	$('p').css('color', pColor);
+	$('.project img').css('opacity', .75);
+
 }
